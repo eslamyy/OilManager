@@ -1,4 +1,4 @@
-name: Build Oil Manager V1.1 APK
+name: Build Oil Manager V1.1.1 APK
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
         run: |
           rm -rf oil-build
           mkdir oil-build
-          unzip -q Oil_Manager_Standalone_V1_1_APPROVED.zip -d oil-build
+          unzip -q Oil_Manager_Standalone_V1_1_1_FIXED.zip -d oil-build
 
       - name: Build APK
         run: |
@@ -40,11 +40,11 @@ jobs:
         run: |
           mkdir -p apk-output
           cd oil-build/Oil_Manager_Standalone_V1/app/build/outputs/apk/debug
-          cp app-debug.apk ../../../../../../../apk-output/Oil-Manager-V1.1-APPROVED.apk
+          cp app-debug.apk ../../../../../../../apk-output/Oil-Manager-V1.1.1.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Oil-Manager-V1.1-APPROVED-APK
-          path: apk-output/Oil-Manager-V1.1-APPROVED.apk
+          name: Oil-Manager-V1.1.1-APK
+          path: apk-output/Oil-Manager-V1.1.1.apk
           if-no-files-found: error
