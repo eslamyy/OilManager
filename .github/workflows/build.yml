@@ -1,31 +1,28 @@
-name: Build Oil Manager V1.1.2 APK
+name: Diagnose Oil Manager Build
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      - name: Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Gradle
+      - name: Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.11.1"
 
-      - name: Extract project
+      - name: Extract
         run: |
           rm -rf oil-build
           mkdir oil-build
@@ -34,17 +31,12 @@ jobs:
       - name: Build APK
         run: |
           cd oil-build/Oil_Manager_Standalone_V1
-          gradle :app:assembleDebug --stacktrace
+          set -o pipefail
+          gradle :app:assembleDebug --console=plain 2>&1 | tee build-error.txt
 
-      - name: Prepare APK
-        run: |
-          mkdir -p apk-output
-          cd oil-build/Oil_Manager_Standalone_V1/app/build/outputs/apk/debug
-          cp app-debug.apk ../../../../../../../apk-output/Oil-Manager-V1.1.2.apk
-
-      - name: Upload APK
+      - name: Upload Error Log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Oil-Manager-V1.1.2-APK
-          path: apk-output/Oil-Manager-V1.1.2.apk
-          if-no-files-found: error
+          name: Oil-Build-Error
+          path: oil-build/Oil_Manager_Standalone_V1/build-error.txt
