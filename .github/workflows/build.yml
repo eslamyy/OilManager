@@ -1,4 +1,4 @@
-name: Build Oil Manager V1.2.1 APK
+name: Build Oil Manager V1.2.2 APK
 
 on:
   workflow_dispatch:
@@ -26,7 +26,7 @@ jobs:
         run: |
           rm -rf oil-build
           mkdir oil-build
-          unzip -q Oil_Manager_Standalone_V1_2_1_ANDROIDX_FIXED.zip -d oil-build
+          unzip -q Oil_Manager_Standalone_V1_2_2_READY.zip -d oil-build
 
       - name: Build APK
         run: |
@@ -36,4 +36,4 @@ jobs:
       - name: Prepare APK
         run: |
           mkdir -p apk-output
-          cd oil-build/Oil_Manager_Standalone
+          cd
