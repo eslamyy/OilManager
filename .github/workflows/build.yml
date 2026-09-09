@@ -1,4 +1,4 @@
-name: Diagnose Oil Manager Build
+name: Build Oil Manager V1.2 CLEAN
 
 on:
   workflow_dispatch:
@@ -26,17 +26,22 @@ jobs:
         run: |
           rm -rf oil-build
           mkdir oil-build
-          unzip -q Oil_Manager_Standalone_V1_1_2_FIXED.zip -d oil-build
+          unzip -q Oil_Manager_Standalone_V1_2_CLEAN.zip -d oil-build
 
       - name: Build APK
         run: |
           cd oil-build/Oil_Manager_Standalone_V1
-          set -o pipefail
-          gradle :app:assembleDebug --console=plain 2>&1 | tee build-error.txt
+          gradle :app:assembleDebug --stacktrace
 
-      - name: Upload Error Log
-        if: always()
+      - name: Prepare APK
+        run: |
+          mkdir -p apk-output
+          cd oil-build/Oil_Manager_Standalone_V1/app/build/outputs/apk/debug
+          cp app-debug.apk ../../../../../../../apk-output/Oil-Manager-V1.2.apk
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Oil-Build-Error
-          path: oil-build/Oil_Manager_Standalone_V1/build-error.txt
+          name: Oil-Manager-V1.2-APK
+          path: apk-output/Oil-Manager-V1.2.apk
+          if-no-files-found: error
