@@ -1,4 +1,4 @@
-name: Build Oil Manager V1.2.2 APK
+name: Build Oil Manager FRESH V1
 
 on:
   workflow_dispatch:
@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Java 17
+      - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Gradle
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.11.1"
@@ -26,14 +26,3 @@ jobs:
         run: |
           rm -rf oil-build
           mkdir oil-build
-          unzip -q Oil_Manager_Standalone_V1_2_2_READY.zip -d oil-build
-
-      - name: Build APK
-        run: |
-          cd oil-build/Oil_Manager_Standalone_V1
-          gradle :app:assembleDebug --stacktrace
-
-      - name: Prepare APK
-        run: |
-          mkdir -p apk-output
-          cd
