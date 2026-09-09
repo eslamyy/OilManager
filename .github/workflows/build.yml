@@ -1,4 +1,4 @@
-name: Build Oil Manager V1.2 CLEAN
+name: Build Oil Manager V1.2.1 APK
 
 on:
   workflow_dispatch:
@@ -22,11 +22,11 @@ jobs:
         with:
           gradle-version: "8.11.1"
 
-      - name: Extract
+      - name: Extract project
         run: |
           rm -rf oil-build
           mkdir oil-build
-          unzip -q Oil_Manager_Standalone_V1_2_CLEAN.zip -d oil-build
+          unzip -q Oil_Manager_Standalone_V1_2_1_ANDROIDX_FIXED.zip -d oil-build
 
       - name: Build APK
         run: |
@@ -36,12 +36,4 @@ jobs:
       - name: Prepare APK
         run: |
           mkdir -p apk-output
-          cd oil-build/Oil_Manager_Standalone_V1/app/build/outputs/apk/debug
-          cp app-debug.apk ../../../../../../../apk-output/Oil-Manager-V1.2.apk
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Oil-Manager-V1.2-APK
-          path: apk-output/Oil-Manager-V1.2.apk
-          if-no-files-found: error
+          cd oil-build/Oil_Manager_Standalone
