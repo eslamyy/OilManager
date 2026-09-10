@@ -1,4 +1,4 @@
-name: Build Ramadan Oil Manager V2 PRO
+name: Build Ramadan Oil Manager V3 PRO
 
 on:
   workflow_dispatch:
@@ -22,31 +22,25 @@ jobs:
         with:
           gradle-version: "8.7"
 
-      - name: Extract V2 PRO
+      - name: Extract V3
         run: |
           rm -rf build-project
           mkdir build-project
-          unzip -q Ramadan_Oil_Manager_V2_PRO.zip -d build-project
-          echo "=== PROJECT CONTENTS ==="
-          find build-project -maxdepth 3 -type f | head -80
+          unzip -q Ramadan_Oil_Manager_V3_PRO_READY.zip -d build-project
 
-      - name: Find and Build Project
+      - name: Build V3 APK
         run: |
-          PROJECT_DIR=$(find build-project -name settings.gradle -o -name settings.gradle.kts | head -1 | xargs dirname)
-          echo "Building project from: $PROJECT_DIR"
-          cd "$PROJECT_DIR"
+          cd build-project/Ramadan_Oil_Manager_V3_PRO
           gradle :app:assembleDebug --console=plain --stacktrace
 
       - name: Prepare APK
         run: |
-          APK=$(find build-project -type f -name "app-debug.apk" | head -1)
-          test -n "$APK" || { echo "APK NOT FOUND"; exit 1; }
           mkdir -p apk-output
-          cp "$APK" apk-output/Ramadan-Oil-Manager-V2-PRO.apk
+          cp build-project/Ramadan_Oil_Manager_V3_PRO/app/build/outputs/apk/debug/app-debug.apk apk-output/Ramadan-Oil-Manager-V3-PRO.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Ramadan-Oil-Manager-V2-PRO-APK
-          path: apk-output/Ramadan-Oil-Manager-V2-PRO.apk
+          name: Ramadan-Oil-Manager-V3-PRO-APK
+          path: apk-output/Ramadan-Oil-Manager-V3-PRO.apk
           if-no-files-found: error
